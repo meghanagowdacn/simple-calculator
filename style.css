@@ -1,0 +1,227 @@
+/* ============================================================
+   CALCULATOR  –  style.css
+   Design: dark glass card, coral accent, monospaced display
+   ============================================================ */
+
+/* ── 1. Google Font import ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ── 2. CSS custom properties (design tokens) ──────────────── */
+:root {
+  /* Background */
+  --bg-page:       #0f0f13;
+
+  /* Calculator card */
+  --card-bg:       #1a1a24;
+  --card-border:   rgba(255,255,255,0.07);
+  --card-shadow:   0 32px 64px rgba(0,0,0,0.6);
+
+  /* Display */
+  --display-bg:    #121218;
+
+  /* Button families */
+  --btn-number-bg:   #252533;
+  --btn-number-hover:#2e2e40;
+  --btn-action-bg:   #1f2035;
+  --btn-action-hover:#282840;
+  --btn-operator-bg: #2a2050;
+  --btn-operator-hover:#342862;
+  --btn-clear-bg:    #3d1f1f;
+  --btn-clear-hover: #4d2626;
+  --btn-equals-bg:   #e05a3a;        /* coral accent */
+  --btn-equals-hover:#eb6b4a;
+
+  /* Text */
+  --text-primary:  #f0f0f8;
+  --text-dim:      #6b6b88;
+  --text-operator: #a78bfa;          /* purple tint for operators */
+  --text-equals:   #ffffff;
+  --text-clear:    #ff7070;
+
+  /* Misc */
+  --radius-card:   24px;
+  --radius-btn:    14px;
+  --transition:    0.15s ease;
+}
+
+/* ── 3. Reset & base ───────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-page);
+  /* Subtle radial glow behind the card */
+  background-image: radial-gradient(ellipse 60% 50% at 50% 40%,
+    rgba(110, 70, 200, 0.15), transparent);
+  font-family: 'Inter', sans-serif;
+  padding: 16px;
+}
+
+/* ── 4. Calculator card ────────────────────────────────────── */
+.calculator {
+  width: 100%;
+  max-width: 340px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+/* ── 5. Display area ───────────────────────────────────────── */
+.display {
+  background: var(--display-bg);
+  padding: 24px 24px 20px;
+  text-align: right;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+/* Small expression line  e.g. "12 + 3 ="  */
+.expression {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  min-height: 1.2em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Large result / current input */
+.result {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* Shrink font if the number is very long */
+  transition: font-size var(--transition);
+}
+
+/* Error state */
+.result.error {
+  font-size: 1.4rem;
+  color: #ff7070;
+}
+
+/* ── 6. Button grid ────────────────────────────────────────── */
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+  gap: 10px;
+  padding: 16px;
+}
+
+/* ── 7. Base button styles ─────────────────────────────────── */
+.btn {
+  border: none;
+  border-radius: var(--radius-btn);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Smooth hover & press animations */
+  transition: background var(--transition), transform var(--transition),
+              box-shadow var(--transition);
+  -webkit-tap-highlight-color: transparent; /* remove tap flash on mobile */
+  user-select: none;
+}
+
+/* Press-down effect */
+.btn:active {
+  transform: scale(0.93);
+}
+
+/* Keyboard focus ring (accessibility) */
+.btn:focus-visible {
+  outline: 2px solid var(--btn-equals-bg);
+  outline-offset: 2px;
+}
+
+/* ── 8. Button colour variants ─────────────────────────────── */
+
+/* Number buttons (0-9, .) */
+.btn-number {
+  background: var(--btn-number-bg);
+  color: var(--text-primary);
+}
+.btn-number:hover { background: var(--btn-number-hover); }
+
+/* Action buttons (C, ⌫, %) */
+.btn-action {
+  background: var(--btn-action-bg);
+  color: var(--text-dim);
+  font-size: 1rem;
+}
+.btn-action:hover { background: var(--btn-action-hover); }
+
+/* Clear button */
+.btn-clear {
+  background: var(--btn-clear-bg);
+  color: var(--text-clear);
+  font-weight: 600;
+}
+.btn-clear:hover { background: var(--btn-clear-hover); }
+
+/* Operator buttons (÷ × − +) */
+.btn-operator {
+  background: var(--btn-operator-bg);
+  color: var(--text-operator);
+  font-size: 1.3rem;
+}
+.btn-operator:hover { background: var(--btn-operator-hover); }
+
+/* Active / selected operator gets a glow */
+.btn-operator.active {
+  background: var(--btn-operator-hover);
+  box-shadow: 0 0 0 2px var(--text-operator);
+}
+
+/* Equals button */
+.btn-equals {
+  background: var(--btn-equals-bg);
+  color: var(--text-equals);
+  font-size: 1.4rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(224,90,58,0.35);
+}
+.btn-equals:hover {
+  background: var(--btn-equals-hover);
+  box-shadow: 0 6px 20px rgba(224,90,58,0.5);
+}
+
+/* Zero button spans 2 columns */
+.btn-zero {
+  grid-column: span 2;
+}
+
+/* ── 9. Responsive tweaks ──────────────────────────────────── */
+@media (max-width: 360px) {
+  .result     { font-size: 2rem; }
+  .btn        { height: 56px; font-size: 1rem; }
+  .btn-equals { font-size: 1.2rem; }
+}
+
+/* Respect user's reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+}
